@@ -1,15 +1,13 @@
 <?php
 
-namespace App\Services;
+namespace Dusterio\PlainSqs\Sqs;
 
-use App\Jobs\ExampleJob;
 use Aws\Sqs\SqsClient;
 use Illuminate\Support\Arr;
 use Illuminate\Queue\Connectors\SqsConnector;
-use Illuminate\Queue\SqsQueue;
 use Illuminate\Queue\Jobs\SqsJob;
 
-class CustomSqsConnector extends SqsConnector
+class Connector extends SqsConnector
 {
     /**
      * Establish a queue connection.
@@ -25,7 +23,7 @@ class CustomSqsConnector extends SqsConnector
             $config['credentials'] = Arr::only($config, ['key', 'secret']);
         }
 
-        $queue = new CustomSqsQueue(
+        $queue = new Queue(
             new SqsClient($config), $config['queue'], Arr::get($config, 'prefix', '')
         );
 

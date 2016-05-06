@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
+use Dusterio\PlainSqs\Sqs\Connector;
 use Illuminate\Queue\QueueServiceProvider;
-use App\Services\CustomSqsConnector;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Queue\Events\JobProcessed;
@@ -21,6 +21,10 @@ class CustomQueueServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->publishes([
+            __DIR__ . '/../config/config.php' => config_path('sqs-plain.php')
+        ]);
+
         Queue::after(function (JobProcessed $event) {
             $event->job->delete();
         });
@@ -32,7 +36,7 @@ class CustomQueueServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app['queue']->addConnector('sqs-plain', function () {
-            return new CustomSqsConnector();
+            return new Connector();
         });
     }
 }

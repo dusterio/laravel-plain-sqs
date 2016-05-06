@@ -1,4 +1,4 @@
-# Link Preview 
+# Plain Sqs
 [![Build Status](https://travis-ci.org/dusterio/link-preview.svg)](https://travis-ci.org/dusterio/link-preview)
 [![Code Climate](https://codeclimate.com/github/dusterio/link-preview/badges/gpa.svg)](https://codeclimate.com/github/dusterio/link-preview/badges)
 [![Test Coverage](https://codeclimate.com/github/dusterio/link-preview/badges/coverage.svg)](https://codeclimate.com/github/dusterio/link-preview/badges)

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Services;
+namespace Dusterio\PlainSqs\Sqs;
 
-use App\Jobs\DispatcherJob;
+use Dusterio\PlainSqs\Jobs\DispatcherJob;
 use Illuminate\Queue\SqsQueue;
 use Illuminate\Support\Facades\Config;
 
@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Config;
  * Class CustomSqsQueue
  * @package App\Services
  */
-class CustomSqsQueue extends SqsQueue
+class Queue extends SqsQueue
 {
     /**
      * Create a payload string from the given job and data.
