@@ -34,9 +34,92 @@ Or add it to `composer.json` manually:
 }
 ```
 
-## Direct usage
+## Configuration
+
+```
+// Generate standard config file (Laravel only)
+php artisan vendor:publish
+
+// In Lumen, create it manually (see example below) and load it in bootstrap/app.php
+$app->configure('sqs-plain');
+```
+
+Edit config/sqs-plain.php to suit your needs. This config matches SQS queues with handler classes.
 
 ```php
+return [
+    'handlers' => [
+        'base-integrations-updates' => App\Jobs\HandlerJob::class,
+    ],
+
+    'default-handler' => App\Jobs\HandlerJob::class
+];
+```
+
+If queue is not found in 'handlers' array, SQS payload is passed to default handler.
+
+## Dispatching to SQS
+
+If you plan to push plain messages from Laravel or Lumen, you can rely on DispatcherJob:
+
+```php
+
+use Dusterio\PlainSqs\Jobs\DispatcherJob;
+
+class ExampleController extends Controller
+{
+    public function index()
+    {
+        // Create a PHP object
+        $object = [
+            'music' => 'M.I.A. - Bad girls',
+            'time' => time()
+        ];
+
+        // Pass it to dispatcher job
+        $job = new DispatcherJob($object);
+
+        // Dispatch the job as you normally would
+        $this->dispatch($job);
+    }
+}
+
+```
+
+This will push the following JSON object to SQS:
+
+```
+{"job":"App\\Jobs\\HandlerJob@handle","data":{"music":"M.I.A. - Bad girls","time":1462511642}}
+```
+
+'job' field is not used, actually. It's just kept for compatibility sake.
+
+### Receiving from SQS
+
+If a third-party application is creating custom-format JSON messages, just add a handler in the config file and
+implement a handler class as follows:
+
+```php
+use Illuminate\Contracts\Queue\Job as LaravelJob;
+
+class HandlerJob extends Job
+{
+    protected $data;
+
+    /**
+     * @param LaravelJob $job
+     * @param array $data
+     */
+    public function handle(LaravelJob $job, array $data)
+    {
+        // This is incoming JSON payload, already decoded to an array
+        var_dump($data);
+
+        // Raw JSON payload from SQS, if necessary
+        var_dump($job->getRawBody());
+    }
+}
+
 ```
 
 ### Usage in Laravel 5
@@ -54,7 +137,7 @@ Or add it to `composer.json` manually:
 
 ```php
 // Add in your bootstrap/app.php
-$app->loadComponent('queue', 'Dusterio\PlainSqs\Integrations\LaravelServiceProvider');
+$app->loadComponent('queue', 'Dusterio\PlainSqs\Integrations\LumenServiceProvider');
 ```
 
 ## Todo
