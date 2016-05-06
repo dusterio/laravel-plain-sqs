@@ -58,6 +58,25 @@ return [
 
 If queue is not found in 'handlers' array, SQS payload is passed to default handler.
 
+Add sqs-plain connection to your config/queue.php, eg:
+```
+        ...
+        'sqs-plain' => [
+            'driver' => 'sqs-plain',
+            'key'    => env('AWS_KEY', ''),
+            'secret' => env('AWS_SECRET', ''),
+            'prefix' => 'https://sqs.ap-southeast-2.amazonaws.com/123123/',
+            'queue'  => 'important-music-updates',
+            'region' => 'ap-southeast-2',
+        ],
+        ...
+```
+
+In your .env file, choose sqs-plain as your new default queue driver:
+```
+QUEUE_DRIVER=sqs-plain
+```
+
 ## Dispatching to SQS
 
 If you plan to push plain messages from Laravel or Lumen, you can rely on DispatcherJob:
