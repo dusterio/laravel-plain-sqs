@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Providers;
+namespace Dusterio\PlainSqs\Integrations;
 
 use Dusterio\PlainSqs\Sqs\Connector;
-use Illuminate\Queue\QueueServiceProvider;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Queue\Events\JobProcessed;
@@ -12,7 +11,7 @@ use Illuminate\Queue\Events\JobProcessed;
  * Class CustomQueueServiceProvider
  * @package App\Providers
  */
-class CustomQueueServiceProvider extends ServiceProvider
+class LaravelServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap any application services.
