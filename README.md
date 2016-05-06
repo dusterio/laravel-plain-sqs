@@ -1,11 +1,10 @@
 # Plain Sqs
-[![Build Status](https://travis-ci.org/dusterio/link-preview.svg)](https://travis-ci.org/dusterio/link-preview)
+[![Build Status](https://travis-ci.org/dusterio/laravel-plain-sqs.svg)](https://travis-ci.org/dusterio/laravel-plain-sqs)
 [![Code Climate](https://codeclimate.com/github/dusterio/link-preview/badges/gpa.svg)](https://codeclimate.com/github/dusterio/link-preview/badges)
-[![Test Coverage](https://codeclimate.com/github/dusterio/link-preview/badges/coverage.svg)](https://codeclimate.com/github/dusterio/link-preview/badges)
-[![Total Downloads](https://poser.pugx.org/dusterio/link-preview/d/total.svg)](https://packagist.org/packages/dusterio/link-preview)
-[![Latest Stable Version](https://poser.pugx.org/dusterio/link-preview/v/stable.svg)](https://packagist.org/packages/dusterio/link-preview)
-[![Latest Unstable Version](https://poser.pugx.org/dusterio/link-preview/v/unstable.svg)](https://packagist.org/packages/dusterio/link-preview)
-[![License](https://poser.pugx.org/dusterio/link-preview/license.svg)](https://packagist.org/packages/dusterio/link-preview)
+[![Total Downloads](https://poser.pugx.org/dusterio/laravel-plain-sqs/d/total.svg)](https://packagist.org/packages/dusterio/laravel-plain-sqs)
+[![Latest Stable Version](https://poser.pugx.org/dusterio/laravel-plain-sqs/v/stable.svg)](https://packagist.org/packages/dusterio/laravel-plain-sqs)
+[![Latest Unstable Version](https://poser.pugx.org/dusterio/laravel-plain-sqs/v/unstable.svg)](https://packagist.org/packages/dusterio/laravel-plain-sqs)
+[![License](https://poser.pugx.org/dusterio/laravel-plain-sqs/license.svg)](https://packagist.org/packages/dusterio/laravel-plain-sqs)
 
 A custom SQS connector for Laravel (or Lumen) that supports custom format JSON payloads. Out of the box, Laravel expects
 SQS messages to be generated in specific format - format that includes job handler class and a serialized job.
@@ -22,7 +21,7 @@ But in certain cases you may want to parse messages from third party application
 To install simply run:
 
 ```
-composer require dusterio/plainsqs
+composer require dusterio/laravel-plain-sqs
 ```
 
 Or add it to `composer.json` manually:
@@ -30,7 +29,7 @@ Or add it to `composer.json` manually:
 ```json
 {
     "require": {
-        "dusterio/plainsqs": "~0.1"
+        "dusterio/laravel-plain-sqs": "~0.1"
     }
 }
 ```
@@ -54,6 +53,13 @@ Or add it to `composer.json` manually:
     '...',
     'Dusterio\PlainSqs\Integrations\LaravelServiceProvider',
 ];
+```
+
+### Usage in Lumen 5
+
+```php
+// Add in your bootstrap/app.php
+$app->loadComponent('queue', 'Dusterio\PlainSqs\Integrations\LaravelServiceProvider');
 ```
 
 ## Todo
