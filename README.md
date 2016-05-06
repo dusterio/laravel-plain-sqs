@@ -39,11 +39,6 @@ Or add it to `composer.json` manually:
 ```php
 ```
 
-**Output**
-
-```
-```
-
 ### Usage in Laravel 5
 
 ```php
