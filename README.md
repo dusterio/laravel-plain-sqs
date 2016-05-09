@@ -36,7 +36,7 @@ Or add it to `composer.json` manually:
 
 ## Configuration
 
-```
+```php
 // Generate standard config file (Laravel only)
 php artisan vendor:publish
 
@@ -59,7 +59,7 @@ return [
 If queue is not found in 'handlers' array, SQS payload is passed to default handler.
 
 Add sqs-plain connection to your config/queue.php, eg:
-```
+```php
         ...
         'sqs-plain' => [
             'driver' => 'sqs-plain',
@@ -82,7 +82,6 @@ QUEUE_DRIVER=sqs-plain
 If you plan to push plain messages from Laravel or Lumen, you can rely on DispatcherJob:
 
 ```php
-
 use Dusterio\PlainSqs\Jobs\DispatcherJob;
 
 class ExampleController extends Controller
@@ -99,7 +98,11 @@ class ExampleController extends Controller
         $job = new DispatcherJob($object);
 
         // Dispatch the job as you normally would
+        // By default, your data will be encapsulated in 'data' and 'job' field will be added
         $this->dispatch($job);
+
+        // If you wish to submit a true plain JSON, add setPlain()
+        $this->dispatch($job->setPlain());
     }
 }
 

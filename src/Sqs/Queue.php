@@ -28,7 +28,7 @@ class Queue extends SqsQueue
 
         $handlerJob = $this->getClass($queue) . '@handle';
 
-        return json_encode(['job' => $handlerJob, 'data' => $job->getPayload()]);
+        return $job->isPlain() ? json_encode($job->getPayload()) : json_encode(['job' => $handlerJob, 'data' => $job->getPayload()]);
     }
 
     /**

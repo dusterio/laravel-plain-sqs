@@ -35,10 +35,7 @@ class Connector extends SqsConnector
                     ? $container['config']->get('sqs-plain.handlers')[$queueId]
                     : $container['config']->get('sqs-plain.default-handler');
 
-            $response = $response['Messages'][0];
-            $body = json_decode($response['Body']);
-            $body->job = $class . '@handle';
-            $response['Body'] = json_encode($body);
+            $response = $this->modifyPayload($response['Messages'][0], $class);
 
             $job = new SqsJob($container, $sqs, $queue, $response);
 
@@ -46,5 +43,24 @@ class Connector extends SqsConnector
         });
 
         return $queue;
+    }
+
+    /**
+     * @param string|array $payload
+     * @param string $class
+     * @return array
+     */
+    private function modifyPayload($payload, $class)
+    {
+        if (! is_array($payload)) $payload = json_decode($payload, true);
+
+        $body = [
+            'job' => $class . '@handle',
+            'data' => json_decode($payload['Body'])
+        ];
+
+        $payload['Body'] = json_encode($body);
+
+        return $payload;
     }
 }
