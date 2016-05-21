@@ -34,8 +34,10 @@ class LaravelServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app['queue']->addConnector('sqs-plain', function () {
-            return new Connector();
+         $this->app->booted(function () {
+            $this->app['queue']->extend('sqs-plain', function () {
+                return new Connector();
+            });
         });
     }
 }
