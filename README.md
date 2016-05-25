@@ -34,6 +34,24 @@ Or add it to `composer.json` manually:
 }
 ```
 
+### Usage in Laravel 5
+
+```php
+// Add in your config/app.php
+
+'providers' => [
+    '...',
+    'Dusterio\PlainSqs\Integrations\LaravelServiceProvider',
+];
+```
+
+### Usage in Lumen 5
+
+```php
+// Add in your bootstrap/app.php
+$app->loadComponent('queue', 'Dusterio\PlainSqs\Integrations\LumenServiceProvider');
+```
+
 ## Configuration
 
 ```php
@@ -142,24 +160,6 @@ class HandlerJob extends Job
     }
 }
 
-```
-
-### Usage in Laravel 5
-
-```php
-// Add in your config/app.php
-
-'providers' => [
-    '...',
-    'Dusterio\PlainSqs\Integrations\LaravelServiceProvider',
-];
-```
-
-### Usage in Lumen 5
-
-```php
-// Add in your bootstrap/app.php
-$app->loadComponent('queue', 'Dusterio\PlainSqs\Integrations\LumenServiceProvider');
 ```
 
 ## Todo
