@@ -45,4 +45,21 @@ class Queue extends SqsQueue
             ? Config::get('sqs-plain.handlers')[$queue]
             : Config::get('sqs-plain.default-handler');
     }
+    
+    /**
+     * Push a raw payload onto the queue.
+     *
+     * @param  string  $payload
+     * @param  string  $queue
+     * @param  array   $options
+     * @return mixed
+     */
+    public function pushRaw($payload, $queue = null, array $options = [])
+    {
+        $payload = json_decode($payload, true);
+
+        $response = $this->sqs->sendMessage(['QueueUrl' => $this->getQueue($queue), 'MessageBody' => array_key_exists('was_plain', $payload) ? json_encode($payload['data']) : json_encode($payload)]);
+
+        return $response->get('MessageId');
+    }
 }
