@@ -54,17 +54,12 @@ class Connector extends SqsConnector
     {
         if (! is_array($payload)) $payload = json_decode($payload, true);
 
-        if(!array_key_exists('job', $payload) || !array_key_exists('data', $payload)){
+        $body = [
+          'job' => $class . '@handle',
+          'data' => json_decode($payload['Body'])
+        ];
 
-          $body = [
-              'job' => $class . '@handle',
-              'data' => json_decode($payload['Body']),
-              'was_plain' => true
-          ];
-
-          $payload['Body'] = json_encode($body);
-
-        }
+        $payload['Body'] = json_encode($body);
 
         return $payload;
     }
