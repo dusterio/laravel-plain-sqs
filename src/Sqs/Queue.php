@@ -5,6 +5,7 @@ namespace Dusterio\PlainSqs\Sqs;
 use Dusterio\PlainSqs\Jobs\DispatcherJob;
 use Illuminate\Queue\SqsQueue;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Queue\Jobs\SqsJob;
 
 /**
  * Class CustomSqsQueue
@@ -44,6 +45,54 @@ class Queue extends SqsQueue
         return (array_key_exists($queue, Config::get('sqs-plain.handlers')))
             ? Config::get('sqs-plain.handlers')[$queue]
             : Config::get('sqs-plain.default-handler');
+    }
+
+    /**
+     * Pop the next job off of the queue.
+     *
+     * @param  string  $queue
+     * @return \Illuminate\Contracts\Queue\Job|null
+     */
+    public function pop($queue = null)
+    {
+        $queue = $this->getQueue($queue);
+
+        $response = $this->sqs->receiveMessage([
+            'QueueUrl' => $queue,
+            'AttributeNames' => ['ApproximateReceiveCount'],
+        ]);
+
+        if (count($response['Messages']) > 0) {
+            $queueId = explode('/', $queue);
+            $queueId = array_pop($queueId);
+
+            $class = (array_key_exists($queueId, $this->container['config']->get('sqs-plain.handlers')))
+                ? $this->container['config']->get('sqs-plain.handlers')[$queueId]
+                : $this->container['config']->get('sqs-plain.default-handler');
+
+            $response = $this->modifyPayload($response['Messages'][0], $class);
+
+            return new SqsJob($this->container, $this->sqs, $queue, $response);
+        }
+    }
+
+    /**
+     * @param string|array $payload
+     * @param string $class
+     * @return array
+     */
+    private function modifyPayload($payload, $class)
+    {
+        if (! is_array($payload)) $payload = json_decode($payload, true);
+
+        $body = [
+            'job' => $class . '@handle',
+            'data' => json_decode($payload['Body'])
+        ];
+
+        $payload['Body'] = json_encode($body);
+
+        return $payload;
     }
 
     /**
