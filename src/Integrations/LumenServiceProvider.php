@@ -20,9 +20,7 @@ class LumenServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Queue::after(function (JobProcessed $event) {
-            $event->job->delete();
-        });
+        //
     }
 
     /**
