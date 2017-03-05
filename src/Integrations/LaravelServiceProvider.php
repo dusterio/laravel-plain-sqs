@@ -25,7 +25,11 @@ class LaravelServiceProvider extends ServiceProvider
         ]);
 
         Queue::after(function (JobProcessed $event) {
-            $event->job->delete();
+            try {
+                $event->job->delete();
+            } catch (\Exception $e) {
+                // Ignore...
+            }
         });
     }
 
