@@ -9,6 +9,7 @@ use Illuminate\Queue\Events\JobProcessed;
 
 /**
  * Class CustomQueueServiceProvider
+ *
  * @package App\Providers
  */
 class LaravelServiceProvider extends ServiceProvider
@@ -26,7 +27,9 @@ class LaravelServiceProvider extends ServiceProvider
 
         Queue::after(function (JobProcessed $event) {
             try {
-                $event->job->delete();
+                if (!$event->job->isDeletedOrReleased()) {
+                    $event->job->delete();
+                }
             } catch (\Exception $e) {
                 // Ignore...
             }
@@ -38,7 +41,7 @@ class LaravelServiceProvider extends ServiceProvider
      */
     public function register()
     {
-         $this->app->booted(function () {
+        $this->app->booted(function () {
             $this->app['queue']->extend('sqs-plain', function () {
                 return new Connector();
             });
