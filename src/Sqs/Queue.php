@@ -72,7 +72,7 @@ class Queue extends SqsQueue
 
             $response = $this->modifyPayload($response['Messages'][0], $class);
 
-            if (preg_match('/5\.4.*/', $this->container->version())) {
+            if (version_compare($this->container->version(), '5.4') >= 0) {
                 return new SqsJob($this->container, $this->sqs, $response, $this->connectionName, $queue);
             }
 
