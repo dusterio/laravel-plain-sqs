@@ -62,7 +62,7 @@ class Queue extends SqsQueue
             'AttributeNames' => ['ApproximateReceiveCount'],
         ]);
 
-        if (count($response['Messages']) > 0) {
+        if (isset($response['Messages']) && count($response['Messages']) > 0) {
             $queueId = explode('/', $queue);
             $queueId = array_pop($queueId);
 
