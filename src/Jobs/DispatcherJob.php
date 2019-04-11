@@ -37,7 +37,7 @@ class DispatcherJob implements ShouldQueue
     {
         if (! $this->isPlain()) {
             return [
-                'job' => app('config')->get('sqs-plain.default-handler'),
+                'job' => app('config')->get('sqs-plain.default-handler') . '@handle',
                 'data' => $this->data
             ];
         }
