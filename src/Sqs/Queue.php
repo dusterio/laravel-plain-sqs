@@ -61,6 +61,7 @@ class Queue extends SqsQueue
         $response = $this->sqs->receiveMessage([
             'QueueUrl' => $queue,
             'AttributeNames' => ['ApproximateReceiveCount'],
+            'WaitTimeSeconds' => 20
         ]);
 
         if (isset($response['Messages']) && count($response['Messages']) > 0) {
