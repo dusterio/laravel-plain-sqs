@@ -86,7 +86,7 @@ class Queue extends SqsQueue
 
     private function addAttributeNames($options)
     {
-        $list = Config::get('sqs-plain.attributeNames', '');
+        $list = Config::get('sqs-plain.popAttributeNames', '');
         $names = array_merge(['ApproximateReceiveCount'], explode(',', $list));
 
         $options['AttributeNames'] = $this->cleanArray($names);
@@ -96,7 +96,7 @@ class Queue extends SqsQueue
 
     private function addMessageAttributeNames($options)
     {
-        $list = Config::get('sqs-plain.messageAttributeNames', '');
+        $list = Config::get('sqs-plain.popMessageAttributeNames', '');
 
         if (empty($list)) {
             return $options;
