@@ -57,10 +57,14 @@ class Queue extends SqsQueue
     {
         $queue = $this->getQueue($queue);
 
-        $response = $this->sqs->receiveMessage([
+        $options = [
             'QueueUrl' => $queue,
-            'AttributeNames' => ['ApproximateReceiveCount'],
-        ]);
+        ];
+
+        $options = $this->addAttributeNames($options);
+        $options = $this->addMessageAttributeNames($options);
+
+        $response = $this->sqs->receiveMessage($options);
 
         if (isset($response['Messages']) && count($response['Messages']) > 0) {
             $queueId = explode('/', $queue);
@@ -78,6 +82,39 @@ class Queue extends SqsQueue
 
             return new SqsJob($this->container, $this->sqs, $queue, $response);
         }
+    }
+
+    private function addAttributeNames($options)
+    {
+        $list = Config::get('sqs-plain.attributeNames', '');
+        $names = array_merge(['ApproximateReceiveCount'], explode(',', $list));
+
+        $options['AttributeNames'] = $this->cleanArray($names);
+
+        return $options;
+    }
+
+    private function addMessageAttributeNames($options)
+    {
+        $list = Config::get('sqs-plain.messageAttributeNames', '');
+
+        if (empty($list)) {
+            return $options;
+        }
+
+        $names = explode(',', $list);
+
+        $options['MessageAttributeNames'] = $this->cleanArray($names);
+
+        return $options;
+    }
+
+    private function cleanArray($array)
+    {
+        $array = array_map('trim', array_filter($array));
+        $array = array_unique($array);
+
+        return $array;
     }
 
     /**
