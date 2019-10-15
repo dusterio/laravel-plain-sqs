@@ -1,5 +1,5 @@
 {
-    "name": "andrewduck/laravel-plain-sqs",
+    "name": "dusterio/laravel-plain-sqs",
     "type": "library",
     "description": "Custom SQS connector for Laravel that supports custom format JSON",
     "keywords": ["php","laravel","lumen","sqs","aws"],
@@ -25,7 +25,7 @@
     },
     "autoload": {
         "psr-4": {
-            "andrewduck\\PlainSqs\\": "src/"
+            "Dusterio\\PlainSqs\\": "src/"
         }
     }
 }
