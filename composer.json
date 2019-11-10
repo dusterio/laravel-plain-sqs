@@ -14,9 +14,9 @@
     ],
     "require": {
         "php": ">=5.5.0",
-        "illuminate/support": "5.*",
-	"illuminate/queue": "5.*",
-	"illuminate/bus": "5.*",
+        "illuminate/support": "6.*",
+	"illuminate/queue": "6.*",
+	"illuminate/bus": "6.*",
 	"aws/aws-sdk-php": "~3.0"
     },
     "require-dev": {
