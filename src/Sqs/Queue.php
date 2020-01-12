@@ -76,7 +76,7 @@ class Queue extends SqsQueue
 
 
           
-            if (preg_match('/5\.[4-8]\..*|6\.[0-9]\..*/', $this->container->version())) {
+            if (preg_match('/(5\.[4-8]\..*)|(6\.[0-9]*\..*)/', $this->container->version())) {
 
                 return new SqsJob($this->container, $this->sqs, $response, $this->connectionName, $queue);
             }
