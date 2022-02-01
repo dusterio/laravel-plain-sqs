@@ -19,14 +19,16 @@ class Connector extends SqsConnector
     {
         $config = $this->getDefaultConfiguration($config);
 
-        if ($config['key'] && $config['secret']) {
+        if (isset($config['key']) && isset($config['secret'])) {
             $config['credentials'] = Arr::only($config, ['key', 'secret']);
         }
 
         $queue = new Queue(
-            new SqsClient($config), $config['queue'], Arr::get($config, 'prefix', '')
+            new SqsClient($config),
+            $config['queue'],
+            Arr::get($config, 'prefix', '')
         );
-        
+
         return $queue;
     }
 }
