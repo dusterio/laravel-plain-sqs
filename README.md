@@ -29,7 +29,7 @@ Or add it to `composer.json` manually:
 ```json
 {
     "require": {
-        "dusterio/laravel-plain-sqs": "~0.1"
+        "tyamahori/laravel-plain-sqs": "^1.0"
     }
 }
 ```

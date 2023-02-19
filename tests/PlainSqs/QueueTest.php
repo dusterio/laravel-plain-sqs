@@ -1,15 +1,16 @@
 <?php
 
 namespace Dusterio\PlainSqs\Tests;
-use Aws\Sqs\SqsClient;
+
 use Dusterio\PlainSqs\Jobs\DispatcherJob;
 use Dusterio\PlainSqs\Sqs\Queue;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class QueueTest
  * @package Dusterio\PlainSqs\Tests
  */
-class QueueTest extends \PHPUnit_Framework_TestCase
+class QueueTest extends TestCase
 {
     /**
      * @test
