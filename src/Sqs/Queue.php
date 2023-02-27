@@ -3,6 +3,7 @@
 namespace Dusterio\PlainSqs\Sqs;
 
 use Dusterio\PlainSqs\Jobs\DispatcherJob;
+use Illuminate\Contracts\Queue\Job;
 use Illuminate\Queue\SqsQueue;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Queue\Jobs\SqsJob;
@@ -50,10 +51,10 @@ class Queue extends SqsQueue
     /**
      * Pop the next job off of the queue.
      *
-     * @param  string  $queue
-     * @return \Illuminate\Contracts\Queue\Job|null
+     * @param string|null $queue
+     * @return SqsJob|Job|null
      */
-    public function pop($queue = null)
+    public function pop(string|null $queue = null): SqsJob|Job|null
     {
         $queue = $this->getQueue($queue);
 
@@ -72,12 +73,10 @@ class Queue extends SqsQueue
 
             $response = $this->modifyPayload($response['Messages'][0], $class);
 
-            if (preg_match('/(5\.[4-8]\..*)|(6\.[0-9]*\..*)|(7\.[0-9]*\..*)|(8\.[0-9]*\..*)|(9\.[0-9]*\..*)/', $this->container->version())) {
-                return new SqsJob($this->container, $this->sqs, $response, $this->connectionName, $queue);
-            }
-
-            return new SqsJob($this->container, $this->sqs, $queue, $response);
+            return new SqsJob($this->container, $this->sqs, $response, $this->connectionName, $queue);
         }
+
+        return null;
     }
 
     /**
