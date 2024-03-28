@@ -25,7 +25,11 @@ class LaravelServiceProvider extends ServiceProvider
         ]);
 
         Queue::after(function (JobProcessed $event) {
-            $event->job->delete();
+            if ($event->job->getConnectionName() === 'sqs-plain') {
+                if (!$event->job->isDeletedOrReleased()) {
+                    $event->job->delete();
+                }
+            }
         });
     }
 
