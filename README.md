@@ -100,6 +100,9 @@ QUEUE_DRIVER=sqs-plain
 If you plan to push plain messages from Laravel or Lumen, you can rely on DispatcherJob:
 
 ```php
+namespace App\Http\Controllers\Api;
+
+use App\Http\Controllers\Controller;
 use Dusterio\PlainSqs\Jobs\DispatcherJob;
 
 class ExampleController extends Controller
@@ -140,7 +143,10 @@ If a third-party application is creating custom-format JSON messages, just add a
 implement a handler class as follows:
 
 ```php
+namespace App\Jobs;
+
 use Illuminate\Contracts\Queue\Job as LaravelJob;
+use Illuminate\Queue\Jobs\Job;
 
 class HandlerJob extends Job
 {
@@ -158,9 +164,14 @@ class HandlerJob extends Job
         // Raw JSON payload from SQS, if necessary
         var_dump($job->getRawBody());
     }
-}
 
+    public function getRawBody() {}
+
+    public function getJobId() {}
+}
 ```
+
+Please note, we are declaring the `getRawBody` and `getJobId` methods to satisfy the abstract class requirements. However, these are not used when processing messages.
 
 ## Todo
 
