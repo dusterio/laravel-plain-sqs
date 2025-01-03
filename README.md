@@ -140,9 +140,9 @@ If a third-party application is creating custom-format JSON messages, just add a
 implement a handler class as follows:
 
 ```php
-use Illuminate\Contracts\Queue\Job as LaravelJob;
+use Illuminate\Contracts\Queue\Job;
 
-class HandlerJob extends Job
+class HandlerJob
 {
     protected $data;
 
@@ -150,7 +150,7 @@ class HandlerJob extends Job
      * @param LaravelJob $job
      * @param array $data
      */
-    public function handle(LaravelJob $job, array $data)
+    public function handle(Job $job, array $data)
     {
         // This is incoming JSON payload, already decoded to an array
         var_dump($data);
