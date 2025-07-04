@@ -21,10 +21,10 @@ class Queue extends SqsQueue
      * @param  string  $queue
      * @return string
      */
-    protected function createPayload($job, $data = '', $queue = null)
+    protected function createPayload($job, $queue, $data = '', $delay = null)
     {
         if (!$job instanceof DispatcherJob) {
-            return parent::createPayload($job, $data, $queue);
+            return parent::createPayload($job, $queue, $data, $delay);
         }
 
         $handlerJob = $this->getClass($queue) . '@handle';
@@ -73,7 +73,7 @@ class Queue extends SqsQueue
             $response = $this->modifyPayload($response['Messages'][0], $class);
 
             if (preg_match(
-                '/(5\.[4-8]\..*)|(6\.[0-9]*\..*)|(7\.[0-9]*\..*)|(8\.[0-9]*\..*)|(9\.[0-9]*\..*)|(10\.[0-9]*\..*)|(11\.[0-9]*\..*)/',
+                '/(5\.[4-8]\..*)|(6\.[0-9]*\..*)|(7\.[0-9]*\..*)|(8\.[0-9]*\..*)|(9\.[0-9]*\..*)|(10\.[0-9]*\..*)|(11\.[0-9]*\..*)|(12\.[0-9]*\..*)/',
                 $this->container->version())
             ) {
                 return new SqsJob($this->container, $this->sqs, $response, $this->connectionName, $queue);
